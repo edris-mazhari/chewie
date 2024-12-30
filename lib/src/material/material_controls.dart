@@ -390,16 +390,16 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (!isFinished && !chewieController.isLive && allowSeek)
-              CenterSeekButton(
-                iconData: Icons.replay_10,
-                backgroundColor: Colors.black54,
-                iconColor: Colors.white,
-                show: showPlayButton,
-                fadeDuration: chewieController.materialSeekButtonFadeDuration,
-                iconSize: chewieController.materialSeekButtonSize,
-                onPressed: _seekBackward,
-              ),
+            // if (!isFinished && !chewieController.isLive && allowSeek)
+            //   CenterSeekButton(
+            //     iconData: Icons.replay_10,
+            //     backgroundColor: Colors.black54,
+            //     iconColor: Colors.white,
+            //     show: showPlayButton,
+            //     fadeDuration: chewieController.materialSeekButtonFadeDuration,
+            //     iconSize: chewieController.materialSeekButtonSize,
+            //     onPressed: _seekBackward,
+            //   ),
             Container(
               margin: EdgeInsets.symmetric(
                 horizontal: marginSize,
@@ -413,16 +413,16 @@ class _MaterialControlsState extends State<MaterialControls> with SingleTickerPr
                 onPressed: _playPause,
               ),
             ),
-            if (!isFinished && !chewieController.isLive && allowSeek)
-              CenterSeekButton(
-                iconData: Icons.forward_10,
-                backgroundColor: Colors.black54,
-                iconColor: Colors.white,
-                show: showPlayButton,
-                fadeDuration: chewieController.materialSeekButtonFadeDuration,
-                iconSize: chewieController.materialSeekButtonSize,
-                onPressed: _seekForward,
-              ),
+            // if (!isFinished && !chewieController.isLive && allowSeek)
+            //   CenterSeekButton(
+            //     iconData: Icons.forward_10,
+            //     backgroundColor: Colors.black54,
+            //     iconColor: Colors.white,
+            //     show: showPlayButton,
+            //     fadeDuration: chewieController.materialSeekButtonFadeDuration,
+            //     iconSize: chewieController.materialSeekButtonSize,
+            //     onPressed: _seekForward,
+            //   ),
           ],
         ),
       ),
