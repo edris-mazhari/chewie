@@ -18,10 +18,12 @@ import 'package:video_player/video_player.dart';
 class MaterialControls extends StatefulWidget {
   const MaterialControls({
     this.showPlayButton = true,
+    this.allowSeek = true,
     super.key,
   });
 
   final bool showPlayButton;
+  final bool allowSeek;
 
   @override
   State<StatefulWidget> createState() {
@@ -29,8 +31,7 @@ class MaterialControls extends StatefulWidget {
   }
 }
 
-class _MaterialControlsState extends State<MaterialControls>
-    with SingleTickerProviderStateMixin {
+class _MaterialControlsState extends State<MaterialControls> with SingleTickerProviderStateMixin {
   late PlayerNotifier notifier;
   late VideoPlayerValue _latestValue;
   double? _latestVolume;
@@ -91,7 +92,7 @@ class _MaterialControlsState extends State<MaterialControls>
                       child: CircularProgressIndicator(),
                     )
               else
-                _buildHitArea(),
+                _buildHitArea(allowSeek: widget.allowSeek),
               _buildActionBar(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -102,8 +103,7 @@ class _MaterialControlsState extends State<MaterialControls>
                         0.0,
                         notifier.hideStuff ? barHeight * 0.8 : 0.0,
                       ),
-                      child:
-                          _buildSubtitles(context, chewieController.subtitle!),
+                      child: _buildSubtitles(context, chewieController.subtitle!),
                     ),
                   _buildBottomBar(context),
                 ],
@@ -169,8 +169,7 @@ class _MaterialControlsState extends State<MaterialControls>
           _onSpeedButtonTap();
         },
         iconData: Icons.speed,
-        title: chewieController.optionsTranslation?.playbackSpeedButtonText ??
-            'Playback speed',
+        title: chewieController.optionsTranslation?.playbackSpeedButtonText ?? 'Playback speed',
       )
     ];
 
@@ -195,8 +194,7 @@ class _MaterialControlsState extends State<MaterialControls>
               useRootNavigator: chewieController.useRootNavigator,
               builder: (context) => OptionsDialog(
                 options: options,
-                cancelButtonText:
-                    chewieController.optionsTranslation?.cancelButtonText,
+                cancelButtonText: chewieController.optionsTranslation?.cancelButtonText,
               ),
             );
           }
@@ -278,8 +276,7 @@ class _MaterialControlsState extends State<MaterialControls>
                       const Expanded(child: Text('LIVE'))
                     else
                       _buildPosition(iconColor),
-                    if (chewieController.allowMuting)
-                      _buildMuteButton(controller),
+                    if (chewieController.allowMuting) _buildMuteButton(controller),
                     const Spacer(),
                     if (chewieController.allowFullScreen) _buildExpandButton(),
                   ],
@@ -354,9 +351,7 @@ class _MaterialControlsState extends State<MaterialControls>
           ),
           child: Center(
             child: Icon(
-              chewieController.isFullScreen
-                  ? Icons.fullscreen_exit
-                  : Icons.fullscreen,
+              chewieController.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
               color: Colors.white,
             ),
           ),
@@ -365,11 +360,10 @@ class _MaterialControlsState extends State<MaterialControls>
     );
   }
 
-  Widget _buildHitArea() {
-    final bool isFinished = (_latestValue.position >= _latestValue.duration) &&
-        _latestValue.duration.inSeconds > 0;
-    final bool showPlayButton =
-        widget.showPlayButton && !_dragging && !notifier.hideStuff;
+  Widget _buildHitArea({required bool allowSeek}) {
+    final bool isFinished =
+        (_latestValue.position >= _latestValue.duration) && _latestValue.duration.inSeconds > 0;
+    final bool showPlayButton = widget.showPlayButton && !_dragging && !notifier.hideStuff;
 
     return GestureDetector(
       onTap: () {
@@ -396,7 +390,7 @@ class _MaterialControlsState extends State<MaterialControls>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (!isFinished && !chewieController.isLive)
+            if (!isFinished && !chewieController.isLive && allowSeek)
               CenterSeekButton(
                 iconData: Icons.replay_10,
                 backgroundColor: Colors.black54,
@@ -419,7 +413,7 @@ class _MaterialControlsState extends State<MaterialControls>
                 onPressed: _playPause,
               ),
             ),
-            if (!isFinished && !chewieController.isLive)
+            if (!isFinished && !chewieController.isLive && allowSeek)
               CenterSeekButton(
                 iconData: Icons.forward_10,
                 backgroundColor: Colors.black54,
@@ -498,9 +492,7 @@ class _MaterialControlsState extends State<MaterialControls>
           right: 12.0,
         ),
         child: Icon(
-          _subtitleOn
-              ? Icons.closed_caption
-              : Icons.closed_caption_off_outlined,
+          _subtitleOn ? Icons.closed_caption : Icons.closed_caption_off_outlined,
           color: _subtitleOn ? Colors.white : Colors.grey[700],
         ),
       ),
@@ -547,8 +539,7 @@ class _MaterialControlsState extends State<MaterialControls>
       notifier.hideStuff = true;
 
       chewieController.toggleFullScreen();
-      _showAfterExpandCollapseTimer =
-          Timer(const Duration(milliseconds: 300), () {
+      _showAfterExpandCollapseTimer = Timer(const Duration(milliseconds: 300), () {
         setState(() {
           _cancelAndRestartTimer();
         });
@@ -557,8 +548,8 @@ class _MaterialControlsState extends State<MaterialControls>
   }
 
   void _playPause() {
-    final bool isFinished = (_latestValue.position >= _latestValue.duration) &&
-        _latestValue.duration.inSeconds > 0;
+    final bool isFinished =
+        (_latestValue.position >= _latestValue.duration) && _latestValue.duration.inSeconds > 0;
 
     setState(() {
       if (controller.value.isPlaying) {
@@ -680,8 +671,7 @@ class _MaterialControlsState extends State<MaterialControls>
             ChewieProgressColors(
               playedColor: Theme.of(context).colorScheme.secondary,
               handleColor: Theme.of(context).colorScheme.secondary,
-              bufferedColor:
-                  Theme.of(context).colorScheme.surface.withOpacity(0.5),
+              bufferedColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
               backgroundColor: Theme.of(context).disabledColor.withOpacity(.5),
             ),
         draggableProgressBar: chewieController.draggableProgressBar,

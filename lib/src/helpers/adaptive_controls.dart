@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 
 class AdaptiveControls extends StatelessWidget {
   const AdaptiveControls({
+    this.allowSeek,
     super.key,
   });
+
+  final bool? allowSeek;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,9 @@ class AdaptiveControls extends StatelessWidget {
           iconColor: Color.fromARGB(255, 200, 200, 200),
         );
       default:
-        return const MaterialControls();
+        return MaterialControls(
+          allowSeek: allowSeek ?? true,
+        );
     }
   }
 }
